@@ -1,0 +1,5 @@
+[project]
+name = "callcopilot"
+version = "0.1.0"
+description = "GitHub Copilot CLI BYOK provider launcher"
+requires-python = ">=3.9"
