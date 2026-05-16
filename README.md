@@ -8,6 +8,7 @@ The launcher prefers macOS system Python at `/usr/bin/python3` and uses only the
 
 ```bash
 bin/callCopilot ds -- -s -p "Reply OK only."
+bin/callCopilot dsf -- -s -p "Reply OK only."
 bin/callCopilot nds -- -s -p "Reply OK only."
 bin/callCopilot Qwen3.6-35B-A3B-bf16 -- -s -p "Reply OK only."
 ```
@@ -15,6 +16,7 @@ bin/callCopilot Qwen3.6-35B-A3B-bf16 -- -s -p "Reply OK only."
 Aliases:
 
 - `ds`: DeepSeek official Anthropic API, `deepseek-v4-pro`, with thinking block preservation.
+- `dsf`: DeepSeek official Anthropic API, `deepseek-v4-flash`, with thinking block preservation.
 - `nds`: NVIDIA hosted DeepSeek OpenAI API, `deepseek-ai/deepseek-v4-pro`, with `chat_template_kwargs.thinking=false`.
 - Any other model id: local oMLX OpenAI-compatible backend, with response cleanup for nullable OpenAI-compatible fields.
 
@@ -41,6 +43,6 @@ CALLCOPILOT_OMLX_API_KEY=change-me
 - `/usr/bin/python3`
 - `copilot`
 - `node`
-- `npm` only when `ds` first installs `opencode-deepseek-thinking-fix`
+- `npm` only when `ds` or `dsf` first installs `opencode-deepseek-thinking-fix`
 
-`ds` installs `opencode-deepseek-thinking-fix` into `.runtime/deepseek-thinking-fix/`.
+`ds` and `dsf` install `opencode-deepseek-thinking-fix` into `.runtime/deepseek-thinking-fix/`.

@@ -24,6 +24,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OMLX_MODEL = "Qwen3.6-35B-A3B-bf16"
 DEEPSEEK_ALIAS = "ds"
 DEEPSEEK_MODEL = "deepseek-v4-pro"
+DEEPSEEK_FLASH_ALIAS = "dsf"
+DEEPSEEK_FLASH_MODEL = "deepseek-v4-flash"
 NVIDIA_DEEPSEEK_ALIAS = "nds"
 NVIDIA_DEEPSEEK_MODEL = "deepseek-ai/deepseek-v4-pro"
 
@@ -42,6 +44,7 @@ def usage() -> None:
 
 Model aliases:
   ds    DeepSeek Anthropic API, model deepseek-v4-pro. Requires DEEPSEEK_API_KEY.
+  dsf   DeepSeek Anthropic API, model deepseek-v4-flash. Requires DEEPSEEK_API_KEY.
   nds   NVIDIA hosted DeepSeek OpenAI API, model deepseek-ai/deepseek-v4-pro. Requires NVIDIA_DEEPSEEK_API_KEY.
 
 Default behavior: adds --autopilot unless already provided."""
@@ -100,6 +103,8 @@ def parse_args(argv: List[str]) -> Tuple[str, List[str]]:
 def resolve_model_id(requested: str) -> str:
     if requested == DEEPSEEK_ALIAS:
         return DEEPSEEK_MODEL
+    if requested == DEEPSEEK_FLASH_ALIAS:
+        return DEEPSEEK_FLASH_MODEL
     if requested == NVIDIA_DEEPSEEK_ALIAS:
         return NVIDIA_DEEPSEEK_MODEL
     return requested or env("CALLCOPILOT_DEFAULT_MODEL", DEFAULT_OMLX_MODEL)
@@ -306,7 +311,7 @@ def run_omlx(model_id: str, copilot_args: List[str]) -> int:
 def run_deepseek(model_id: str, copilot_args: List[str]) -> int:
     api_key = os.environ.get("DEEPSEEK_API_KEY", "")
     if not api_key:
-        raise SystemExit("error: DEEPSEEK_API_KEY is required for model alias 'ds'")
+        raise SystemExit("error: DEEPSEEK_API_KEY is required for DeepSeek aliases 'ds' and 'dsf'")
 
     package_root = ensure_thinking_fix_package()
     proxy_base = start_proxy(
@@ -362,7 +367,7 @@ def main(argv: List[str]) -> int:
     requested, copilot_args = parse_args(argv)
     model_id = resolve_model_id(requested)
 
-    if requested in {DEEPSEEK_ALIAS, DEEPSEEK_MODEL}:
+    if requested in {DEEPSEEK_ALIAS, DEEPSEEK_MODEL, DEEPSEEK_FLASH_ALIAS, DEEPSEEK_FLASH_MODEL}:
         return run_deepseek(model_id, copilot_args)
     if requested in {NVIDIA_DEEPSEEK_ALIAS, NVIDIA_DEEPSEEK_MODEL}:
         return run_nvidia_deepseek(model_id, copilot_args)
